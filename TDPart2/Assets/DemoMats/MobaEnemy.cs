@@ -13,6 +13,9 @@ public class MobaEnemy : MonoBehaviour
     private int targetWaypointIndex;
     private Vector3 currentDirection;
     public Manager manager;
+    public GameObject healthbar;
+    private int inithealth;
+    private float inithealthbar;
 
     // public delegate void EnemyDied(EnemyComplete deadEnemy);
     // public event EnemyDied OnEnemyDied;
@@ -23,12 +26,17 @@ public class MobaEnemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        inithealth = health;
         agent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         targetWaypointIndex = 1;
 
         // Place enemy at closest navmesh point (create GetNavmeshPosition)
         Vector3 meshPosition = GetNavmeshPosition(waypointList[1].position);
         agent.SetDestination(meshPosition);
+
+        Transform childbar = gameObject.transform.Find("Healthbar");
+        healthbar = childbar.gameObject;
+        inithealthbar = healthbar.transform.localScale.y;
     }
 
     // Update is called once per frame
@@ -93,6 +101,7 @@ public class MobaEnemy : MonoBehaviour
     public void hit(int damage)
     {
         health -= damage;
+        healthbar.transform.localScale = new Vector3(healthbar.transform.localScale.x, (float)health/(float)inithealth * inithealthbar, healthbar.transform.localScale.z);
         if(health <= 0) {
             manager.addCoins(coins);
             Destroy(this.gameObject);

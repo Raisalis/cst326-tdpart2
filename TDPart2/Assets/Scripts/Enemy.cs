@@ -71,6 +71,7 @@ public class Enemy : MonoBehaviour
     public void hit(int damage)
     {
         health -= damage;
+        
         if(health <= 0) {
             manager.addCoins(coins);
             Destroy(this.gameObject);

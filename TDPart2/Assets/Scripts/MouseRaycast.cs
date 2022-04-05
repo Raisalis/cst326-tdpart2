@@ -5,6 +5,7 @@ using UnityEngine;
 public class MouseRaycast : MonoBehaviour
 {
     public Manager manager;
+    public Popup popupWindow;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +26,12 @@ public class MouseRaycast : MonoBehaviour
                 {
                     GameObject clickedObject = hit.collider.gameObject;
                     if(clickedObject.tag == "enemy") {
-                        clickedObject.GetComponent<Enemy>().hit(1);
+                        clickedObject.GetComponent<MobaEnemy>().hit(1);
+                    }
+
+                    //TODO: click on possible tower placement and place a tower
+                    if(clickedObject.tag == "placement") {
+                        popupWindow.Open(clickedObject);
                     }
                 }
             }
