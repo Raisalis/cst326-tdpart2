@@ -1,4 +1,11 @@
-# Tower Defense Part 2
+# Tower Defense Part 3
+- Towers actually hit enemies.
+- Enemies play a sound on death.
+- Added bullets.
+- Added a base.
+- Added Main Menu and Game Over/Win screens.
+
+### Tower Defense Part 2
 
 - Make a 3D map using Terrain Tools.
 - Use AI Navigation package to handle boundaries.
