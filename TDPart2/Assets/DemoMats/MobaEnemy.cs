@@ -8,6 +8,8 @@ public class MobaEnemy : MonoBehaviour
 
     public int health = 3;
     public int coins = 2;
+    public int power = 1;
+    public Base playerBase;
 
     public List<Transform> waypointList;
     private int targetWaypointIndex;
@@ -34,9 +36,13 @@ public class MobaEnemy : MonoBehaviour
         Vector3 meshPosition = GetNavmeshPosition(waypointList[1].position);
         agent.SetDestination(meshPosition);
 
+        // Healthbar object and value setup
         Transform childbar = gameObject.transform.Find("Healthbar");
         healthbar = childbar.gameObject;
         inithealthbar = healthbar.transform.localScale.y;
+
+        GameObject temp = GameObject.Find("Base");
+        playerBase = temp.GetComponent<Base>();
     }
 
     // Update is called once per frame
@@ -44,17 +50,6 @@ public class MobaEnemy : MonoBehaviour
     {
         Vector3 meshPosition = GetNavmeshPosition(waypointList[targetWaypointIndex].position);
         agent.SetDestination(meshPosition);
-        /*
-        if(Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
-        {
-            // Raycast from the mouse and pick a new destination for the agent
-            Ray pickRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if(Physics.Raycast(pickRay, out RaycastHit hitInfo))
-            {
-                agent.SetDestination(hitInfo.point);
-            }
-        }
-        */
 
         Vector3 targetPosition = waypointList[targetWaypointIndex].position;
         Vector3 currentPosition = transform.position;
@@ -82,6 +77,7 @@ public class MobaEnemy : MonoBehaviour
 
         // Checks if the enemy reached the base. If so, it's destroyed.
         if(targetWaypointIndex > waypointList.Count - 1) {
+            playerBase.removeHealth(power);
             Destroy(this.gameObject);
         } else {
             Vector3 meshPosition = GetNavmeshPosition(waypointList[targetWaypointIndex].position);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.SceneManagement;
 
 public class Manager : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class Manager : MonoBehaviour
     public List<Transform> waypointList;
     public GameObject enemyPrefab;
     public TMP_Text purseText;
+    public float countdown = 10f;
+    public int enemyspawncount = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +28,20 @@ public class Manager : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space))
         {
             spawnEnemy();
+        }
+
+        countdown -= Time.deltaTime;
+        if(countdown <= 0 && enemyspawncount < 10) {
+            spawnEnemy();
+            countdown = 1f;
+            enemyspawncount++;
+        }
+
+        if(enemyspawncount == 10) {
+            GameObject[] enemies = GameObject.FindGameObjectsWithTag("enemy");
+            if(enemies.Length == 0) {
+                SceneManager.LoadScene("Win");
+            }
         }
         
     }
@@ -42,6 +59,8 @@ public class Manager : MonoBehaviour
     // Function to add Coins
     public void addCoins(int amount)
     {
+        AudioSource audioSource = GetComponent<AudioSource>();
+        audioSource.Play();
         coins += amount;
         // onscreen ui coin count edit
         purseText.text = String.Format("Purse: {0:000} Coins", coins);
@@ -58,6 +77,14 @@ public class Manager : MonoBehaviour
     public int getPurse() {
         int current = coins;
         return current;
+    }
+
+    public void gameOver() {
+        SceneManager.LoadScene("GameOver");
+    }
+
+    public void gameWin() {
+        SceneManager.LoadScene("Win");
     }
 
 }

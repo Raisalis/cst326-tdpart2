@@ -6,7 +6,9 @@ public class Enemy : MonoBehaviour
     
     public int health = 3;
     public float speed = 3f;
+    public int power = 1;
     public int coins = 3;
+    
 
     public List<Transform> waypointList;
     private int targetWaypointIndex;
@@ -19,6 +21,7 @@ public class Enemy : MonoBehaviour
         targetWaypointIndex = 1;
         Vector3 targetPosition = waypointList[targetWaypointIndex].position;
         currentDirection = (targetPosition - transform.position).normalized;
+        
     }
 
     void Update()
